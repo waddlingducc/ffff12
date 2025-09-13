@@ -8,9 +8,47 @@
   <!-- Montserrat -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
 
-  <!-- AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2366308143645027"
-     crossorigin="anonymous"></script>
+  <!-- Google Publisher Tag (GAM) -->
+  <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>
+  <script>
+    window.googletag = window.googletag || {cmd: []};
+
+    // Set up slot + services
+    googletag.cmd.push(function() {
+      // Define the right-rail 300x600 slot
+      const railSlot = googletag.defineSlot('/23289777950/300x600', [300, 600], 'div-gpt-ad-1757794050642-0')
+        .addService(googletag.pubads());
+
+      googletag.pubads().enableSingleRequest();
+      googletag.enableServices();
+
+      // ---- Refresh logic: 30s min, only when viewable, cap at 6 ----
+      let refreshes = 0;
+      const MAX_REFRESHES = 6;
+      const INTERVAL_MS  = 30000; // 30 seconds
+      let inView = false;
+
+      // Track visibility (≥50% in view)
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            inView = entry.isIntersecting && entry.intersectionRatio >= 0.5;
+          });
+        }, { threshold: [0.5] });
+        io.observe(document.getElementById('div-gpt-ad-1757794050642-0'));
+      } else {
+        inView = true; // fallback if IO unsupported
+      }
+
+      // Timer to refresh only while in view
+      setInterval(function () {
+        if (!inView) return;
+        if (refreshes >= MAX_REFRESHES) return;
+        googletag.pubads().refresh([railSlot], { changeCorrelator: false });
+        refreshes++;
+      }, INTERVAL_MS);
+    });
+  </script>
 
   <style>
     html, body {
@@ -78,39 +116,39 @@
 
     /* Floating right ad */
     .side-ad {
-  position: fixed;
-  top: 0px;
-  right: 0;
-  width: 300px;
-  height: 600px;
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
-  overflow: hidden;
-  backdrop-filter: blur(6px) saturate(140%) brightness(85%);
-}
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 600px;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      overflow: hidden;
+      backdrop-filter: blur(6px) saturate(140%) brightness(85%);
+    }
   </style>
 </head>
 <body>
 
   <nav>
-      <a class="logo-link" data-href="/" style="cursor:pointer;">
-        <img src="/images/logo.png" alt="logo">
-      </a>
+    <a class="logo-link" data-href="/" style="cursor:pointer;">
+      <img src="/images/logo.png" alt="logo">
+    </a>
 
-      <script>
-        document.querySelectorAll('.logo-link').forEach(link => {
-          link.addEventListener('click', e => {
-            e.preventDefault(); // stops new tab or default <a> behavior
-            window.location.href = link.dataset.href; // always same tab
-          });
+    <script>
+      document.querySelectorAll('.logo-link').forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          window.location.href = link.dataset.href;
         });
-      </script>
+      });
+    </script>
 
-      <h3>www.NebulaPlay.Site</h3>
-    </nav>
+    <h3>www.NebulaPlay.Site</h3>
+  </nav>
 
   <div class="content">
     <!-- Game -->
@@ -121,14 +159,15 @@
     </div>
   </div>
 
-  <!-- Floating Right Vertical Ad -->
+  <!-- Floating Right Vertical Ad (GAM 300x600) -->
   <aside class="side-ad">
-    <ins class="adsbygoogle"
-         style="display:inline-block;width:300px;height:600px"
-         data-ad-client="ca-pub-2366308143645027"
-         data-ad-slot="9891545305"></ins>
+    <!-- /23289777950/300x600 -->
+    <div id="div-gpt-ad-1757794050642-0" style="width:300px;height:600px;"></div>
     <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
+      googletag = window.googletag || {cmd: []};
+      googletag.cmd.push(function() {
+        googletag.display('div-gpt-ad-1757794050642-0');
+      });
     </script>
   </aside>
 
